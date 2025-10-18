@@ -17,8 +17,7 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/GUI-for-Cores/GUI.for.SingBox",
-        "regex": "tag/v([\\d.]+)"
+        "github": "https://github.com/GUI-for-Cores/GUI.for.SingBox"
     },
     "autoupdate": {
         "architecture": {
