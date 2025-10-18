@@ -1,7 +1,7 @@
 {
     "version": "1.13.0",
     "description": "GUI for sing-box, a cross-platform graphical user interface for managing sing-box configurations and instances.",
-    "homepage": "https://github.com/GUI-for-Cores/GUI.for.SingBox",
+    "homepage": "https://gui-for-cores.github.io/",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
