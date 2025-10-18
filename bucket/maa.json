@@ -1,0 +1,31 @@
+{
+    "version": "5.26.2",
+    "description": "Maa is a simple and elegant tool for managing Arknights resources.",
+    "homepage": "https://maa.plus/",
+    "license": "AGPL-3.0-only",
+    "notes": "",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.26.2/MAA-v5.26.2-win-x64.zip",
+            "hash": "sha256:f7ccaf5ccfc112a816416c80041be6fcd11b095df1e6a2a7a97d4ceeb6060707"
+        }
+    },
+    "bin": "MAA.exe",
+    "shortcuts": [
+        [
+            "MAA.exe",
+            "Maa"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/latest",
+        "regex": "tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v$version/MAA-v$version-win-x64.zip"
+            }
+        }
+    }
+}
