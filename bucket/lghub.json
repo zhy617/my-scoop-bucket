@@ -1,0 +1,33 @@
+{
+    "version": "2025.7.768359",
+    "description": "Logitech G Hub",
+    "homepage": "https://www.logitechg.com/zh-cn/innovation/g-hub.html",
+    "license": "Proprietary",
+    "notes": "",
+    "architecture": {
+        "64bit": {
+            "url": "https://download01.logi.com/web/ftp/pub/techsupport/gaming/lghub_installer.exe",
+            "hash": "sha256:BF9CA8AB87C9538DD71F5C49FBA23E238A49D8953899A7C7BE3AC00AE169E9D7"
+        }
+    },
+    "installer": {
+        "args": "/quiet"
+    },
+    "uninstaller": {
+        "script": [
+            "$uninstall_exe = (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*').Where({ $_.DisplayName -eq 'Logitech G HUB' }).UninstallString",
+            "if ($uninstall_exe) {",
+            "   Start-Process $uninstall_exe -ArgumentList '/uninstall /quiet' -Wait",
+            "} else {",
+            "   Write-Host \"Logitech G HUB not found in registry.\"",
+            "}"
+        ]
+    },
+    "bin": "LGHUB.exe",
+    "shortcuts": [
+        [
+            "LGHUB.exe",
+            "LGHUB"
+        ]
+    ]
+}
