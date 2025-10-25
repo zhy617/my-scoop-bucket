@@ -1,12 +1,12 @@
 {
-    "version": "1.13.0",
+    "version": "1.14.0",
     "description": "GUI for sing-box, a cross-platform graphical user interface for managing sing-box configurations and instances.",
     "homepage": "https://gui-for-cores.github.io/",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/GUI-for-Cores/GUI.for.SingBox/releases/download/v1.13.0/GUI.for.SingBox-windows-amd64.zip",
-            "hash": "sha256:35847f86fd5cd972cf39125b58758e81fd0969dd39d0ac562ec5d3afdef2bee9"
+            "url": "https://github.com/GUI-for-Cores/GUI.for.SingBox/releases/download/v1.14.0/GUI.for.SingBox-windows-amd64.zip",
+            "hash": "2632c40c1733354d22b0740fd02151dade80402fd8b0720d2cba178b595e2e3a"
         }
     },
     "bin": "GUI.for.SingBox.exe",
