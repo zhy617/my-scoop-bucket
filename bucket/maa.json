@@ -17,6 +17,11 @@
             "Maa"
         ]
     ],
+    "persist": [
+        "cache",
+        "config",
+        "debug"
+    ],
     "checkver": {
         "github": "https://github.com/MaaAssistantArknights/MaaAssistantArknights"
     },
