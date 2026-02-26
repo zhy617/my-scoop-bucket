@@ -36,7 +36,7 @@
     "env_add_path": "bin\\windows",
     "shortcuts": [
         [
-            "bin\\windows\\tl-tray-menu.exe",
+            "tl-tray-menu.exe",
             "Tex Live Manager"
         ]
     ],
