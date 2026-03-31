@@ -7,7 +7,7 @@
     "hash": "ba9335a07e8afe3a77959815ae7709425d849ebb62284f7e73bbb8f5f0cb0d21",
     "pre_install": [
         "Rename-Item \"$dir\\YYNote.exe\" -NewName 'YYNote-setup.exe' -Force",
-        "$cmdLine = \"`\"$dir\\YYNote-setup.exe`\" /qn APPDIR=$dir ALLUSERS=2 MSIINSTALLPERUSER=1\"",
+        "$cmdLine = \"`\"$dir\\YYNote-setup.exe`\" /qn APPDIR=$dir\"",
         "Start-Process -FilePath $env:ComSpec -ArgumentList @('/c', $cmdLine) -WorkingDirectory $dir -Wait -NoNewWindow",
         "Remove-Item \"$dir\\YYNote-setup.exe\" -Force -ErrorAction SilentlyContinue"
     ],
