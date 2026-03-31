@@ -5,6 +5,12 @@
     "license": "Freeware",
     "url": "https://d.yynote.cn/windows/YYNote.exe",
     "hash": "ba9335a07e8afe3a77959815ae7709425d849ebb62284f7e73bbb8f5f0cb0d21",
+    "pre_install": [
+        "Rename-Item \"$dir\\YYNote.exe\" -NewName 'YYNote-setup.exe' -Force",
+        "$cmdLine = \"`\"$dir\\YYNote-setup.exe`\" /qn APPDIR=$dir\"",
+        "Start-Process -FilePath $env:ComSpec -ArgumentList @('/c', $cmdLine) -WorkingDirectory $dir -Wait -NoNewWindow",
+        "Remove-Item \"$dir\\YYNote-setup.exe\" -Force -ErrorAction SilentlyContinue"
+    ],
     "bin": "YYNote.exe",
     "shortcuts": [
         [
@@ -12,6 +18,21 @@
             "YYNote"
         ]
     ],
+    "uninstaller": {
+        "script": [
+            "$roots = @('HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall', 'HKLM:\\Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall', 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall')",
+            "foreach ($root in $roots) {",
+            "    if (!(Test-Path $root)) { continue }",
+            "    Get-ChildItem $root -ErrorAction SilentlyContinue | ForEach-Object {",
+            "        $p = Get-ItemProperty $_.PSPath",
+            "        if ($p.DisplayName -match '小黄条' -and $_.PSChildName -match '^\\{[A-F0-9-]+\\}$') {",
+            "            Start-Process msiexec.exe -ArgumentList '/x', $_.PSChildName, '/qn', '/norestart' -Wait -NoNewWindow",
+            "            return",
+            "        }",
+            "    }",
+            "}"
+        ]
+    },
     "checkver": {
         "url": "https://www.yynote.cn",
         "script": [
