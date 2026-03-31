@@ -5,10 +5,10 @@
     "license": "Freeware",
     "url": "https://d.yynote.cn/windows/YYNote.exe",
     "hash": "ba9335a07e8afe3a77959815ae7709425d849ebb62284f7e73bbb8f5f0cb0d21",
-    "bin": "YYNote\\YYNote.exe",
+    "bin": "YYNote.exe",
     "shortcuts": [
         [
-            "YYNote\\YYNote.exe",
+            "YYNote.exe",
             "YYNote"
         ]
     ],
