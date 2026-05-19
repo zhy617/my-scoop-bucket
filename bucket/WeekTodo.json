@@ -10,7 +10,10 @@
     "hash": "c214f85207e4d0e377b573f8d3b25d5badcc06e5cfb4315187f1ca77a001ace0",
     "installer": {
         "script": [
-            "& \"$dir\\installer.exe\" /S /D=$dir"
+            "& \"$dir\\installer.exe\" /S /D=$dir",
+            "$exe = Join-Path $dir 'WeekToDo.exe'",
+            "for ($i = 0; $i -lt 60 -and -not (Test-Path $exe); $i++) { Start-Sleep -Seconds 1 }",
+            "if (-not (Test-Path $exe)) { throw 'WeekToDo.exe was not created by installer.' }"
         ]
     },
     "uninstaller": {
@@ -26,9 +29,9 @@
         ]
     ],
     "bin": "WeekToDo.exe",
-    "persist": "WeekToDo",
     "checkver": {
-        "github": "https://github.com/manuelernestog/weektodo"
+        "url": "https://github.com/manuelernestog/weektodo/releases/latest",
+        "regex": "/releases/tag/v([\\d.]+)"
     },
     "autoupdate": {
         "url": "https://github.com/manuelernestog/weektodo/releases/download/v$version/WeekToDo.Setup.$version.exe#/installer.exe"
