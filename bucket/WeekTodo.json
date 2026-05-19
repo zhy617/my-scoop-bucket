@@ -1,0 +1,36 @@
+﻿{
+    "version": "2.2.0",
+    "description": "A free and open source minimalist weekly planner and to-do list app focused on privacy.",
+    "homepage": "https://weektodo.me/",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/manuelernestog/weektodo/blob/main/LICENSE"
+    },
+    "url": "https://github.com/manuelernestog/weektodo/releases/download/v2.2.0/WeekToDo.Setup.2.2.0.exe#/installer.exe",
+    "hash": "c214f85207e4d0e377b573f8d3b25d5badcc06e5cfb4315187f1ca77a001ace0",
+    "installer": {
+        "script": [
+            "& \"$dir\\installer.exe\" /S /D=$dir"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$uninstaller = Join-Path $dir 'Uninstall WeekToDo.exe'",
+            "if (Test-Path $uninstaller) { & $uninstaller /S }"
+        ]
+    },
+    "shortcuts": [
+        [
+            "WeekToDo.exe",
+            "WeekToDo"
+        ]
+    ],
+    "bin": "WeekToDo.exe",
+    "persist": "WeekToDo",
+    "checkver": {
+        "github": "https://github.com/manuelernestog/weektodo"
+    },
+    "autoupdate": {
+        "url": "https://github.com/manuelernestog/weektodo/releases/download/v$version/WeekToDo.Setup.$version.exe#/installer.exe"
+    }
+}
