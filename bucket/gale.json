@@ -9,11 +9,11 @@
             "hash": "f88b514b6f5f454597b5bdd8df1852c1e8a187f88d7220ae4419a69b6f3469df"
         }
     },
-    "pre_install": "if (Test-Path \"$dir\\Path\") { Rename-Item \"$dir\\Path\" 'Gale.exe' }",
-    "bin": "Gale.exe",
+    "extract_dir": "PFiles\\Gale",
+    "bin": "gale.exe",
     "shortcuts": [
         [
-            "Gale.exe",
+            "gale.exe",
             "Gale"
         ]
     ],
