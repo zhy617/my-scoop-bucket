@@ -1,0 +1,81 @@
+{
+    "version": "0.100.0",
+    "description": "A set of utilities for power users to tune and streamline their Windows experience for greater productivity.",
+    "homepage": "https://github.com/microsoft/PowerToys",
+    "license": "MIT",
+    "notes": "This manifest patches PowerToys.Settings self-contained runtime files after extraction.",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/microsoft/PowerToys/releases/download/v0.100.0/PowerToysUserSetup-0.100.0-x64.exe",
+            "hash": "a5eb64b8ceef096aafbfc18e73312b45e9d48fc60fb16676429688468c9a08d6"
+        },
+        "arm64": {
+            "url": "https://github.com/microsoft/PowerToys/releases/download/v0.100.0/PowerToysUserSetup-0.100.0-arm64.exe",
+            "hash": "a4d7eb580a7ef36e7c98ccc84e9ebb552c9d7071dca35b6eb395f938d03fadcf"
+        }
+    },
+    "installer": {
+        "script": [
+            "Expand-DarkArchive \"$dir\\$fname\" \"$dir\\.tmp\"",
+            "Get-ChildItem \"$dir\\.tmp\\AttachedContainer\\PowerToysUserSetup*.msi\" | Rename-Item -NewName 'PowerToysSetup.msi' -Force",
+            "$ver = ([xml](Get-Content -Raw \"$dir\\.tmp\\UX\\manifest.xml\" -Encoding utf8)).BurnManifest.EngineVersion",
+            "if (($null -ne $ver) -and ($ver -like \"5.*\")) {",
+            "    Expand-MsiArchive \"$dir\\.tmp\\AttachedContainer\\PowerToysSetup.msi\" \"$dir\" -ExtractDir 'LocalApp\\PowerToys'",
+            "} else {",
+            "    Expand-MsiArchive \"$dir\\.tmp\\AttachedContainer\\PowerToysSetup.msi\" \"$dir\" -ExtractDir 'PowerToys'",
+            "}",
+            "Remove-Item \"$dir\\.tmp\", \"$dir\\$fname\" -Force -Recurse"
+        ]
+    },
+    "post_install": [
+        "$settingsDir = Join-Path $dir 'WinUI3Apps'",
+        "$depsPath = Join-Path $settingsDir 'PowerToys.Settings.deps.json'",
+        "if (Test-Path $depsPath) {",
+        "    $deps = Get-Content -Raw $depsPath | ConvertFrom-Json",
+        "    $target = $deps.targets.PSObject.Properties | Where-Object Name -like '*win-*' | Select-Object -First 1 -ExpandProperty Value",
+        "    $runtimePacks = $target.PSObject.Properties | Where-Object { $_.Name -like 'runtimepack.*.Runtime.win-*' }",
+        "    $files = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)",
+        "    foreach ($pack in $runtimePacks) {",
+        "        foreach ($section in 'runtime', 'native') {",
+        "            if ($pack.Value.$section) {",
+        "                foreach ($asset in $pack.Value.$section.PSObject.Properties.Name) {",
+        "                    $null = $files.Add([System.IO.Path]::GetFileName($asset))",
+        "                }",
+        "            }",
+        "        }",
+        "    }",
+        "    foreach ($file in $files) {",
+        "        $src = Join-Path $dir $file",
+        "        $dst = Join-Path $settingsDir $file",
+        "        if ((Test-Path $src) -and !(Test-Path $dst)) {",
+        "            Copy-Item -LiteralPath $src -Destination $dst",
+        "        }",
+        "    }",
+        "}"
+    ],
+    "shortcuts": [
+        [
+            "PowerToys.exe",
+            "PowerToys"
+        ]
+    ],
+    "checkver": {
+        "github": "https://api.github.com/repos/microsoft/PowerToys/releases",
+        "jsonpath": "$[0].assets[*].browser_download_url",
+        "regex": "/releases/download/(?<tag>[\\w.]+)/PowerToysUserSetup-([\\d.]+)-x64\\.exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/microsoft/PowerToys/releases/download/v$version/PowerToysUserSetup-$version-x64.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/microsoft/PowerToys/releases/download/v$version/PowerToysUserSetup-$version-arm64.exe"
+            }
+        },
+        "hash": {
+            "url": "https://github.com/microsoft/PowerToys/releases/tag/v$version",
+            "regex": "(?sm)$basename.*?>$sha256<"
+        }
+    }
+}
