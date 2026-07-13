@@ -1,10 +1,10 @@
 {
-    "version": "26.07.05",
+    "version": "26.07.08",
     "description": "小黄条：可嵌入 Windows 桌面的跨平台待办清单。",
     "homepage": "https://www.yynote.cn",
     "license": "Freeware",
     "url": "https://d.yynote.cn/windows/YYNote.exe",
-    "hash": "ecc4f7325fe3992abfc0d98435c294bd43f272a41b955f38bd6c07c927ce3a8c",
+    "hash": "4f0a563cbef9216c7306066e6ed5a729551f6b8d505f068654a9670a6b7f5330",
     "pre_install": [
         "Rename-Item \"$dir\\YYNote.exe\" -NewName 'YYNote-setup.exe' -Force",
         "$cmdLine = \"`\"$dir\\YYNote-setup.exe`\" /qn APPDIR=$dir\"",
