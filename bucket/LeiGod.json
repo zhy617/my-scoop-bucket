@@ -18,17 +18,13 @@
     "extract_to": "installer",
     "pre_install": [
         "Expand-7zipArchive \"$dir\\installer\\.rdata\" \"$dir\"",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "Remove-Item \"$dir\\installer\" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null",
-        "New-PersistDirectory \"$env:APPDATA\\leigod\" \"$persist_dir\\APPDATA\" -Migrate",
-        "New-PersistDirectory \"$env:USERPROFILE\\.leigod\" \"$persist_dir\\.leigod\" -Migrate"
+        "$persist_targets = @(@(\"$env:APPDATA\\leigod\", \"$persist_dir\\APPDATA\"), @(\"$env:USERPROFILE\\.leigod\", \"$persist_dir\\.leigod\"))",
+        "foreach ($persist_target in $persist_targets) { $path = $persist_target[0]; $persist_path = $persist_target[1]; if (!(Test-Path -LiteralPath $persist_path)) { New-Item -ItemType Directory -Path $persist_path -Force | Out-Null }; if (Test-Path -LiteralPath $path) { $item = Get-Item -LiteralPath $path -Force; if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }; Get-ChildItem -LiteralPath $path -Force -ErrorAction SilentlyContinue | Move-Item -Destination $persist_path -Force -ErrorAction SilentlyContinue; Remove-Item -LiteralPath $path -Recurse -Force -ErrorAction SilentlyContinue }; New-Item -ItemType Junction -Path $path -Target $persist_path -Force | Out-Null }"
     ],
     "pre_uninstall": [
-        "$bucket = $install.bucket",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "Stop-App",
-        "Remove-Junction \"$env:APPDATA\\leigod\"",
-        "Remove-Junction \"$env:USERPROFILE\\.leigod\""
+        "foreach ($process in @('leigod', 'LeiGod')) { Get-Process -Name $process -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue }",
+        "foreach ($path in @(\"$env:APPDATA\\leigod\", \"$env:USERPROFILE\\.leigod\")) { if (Test-Path -LiteralPath $path) { $item = Get-Item -LiteralPath $path -Force; if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue } } }"
     ],
     "checkver": {
         "url": "https://www.leigod.com/configs.json",
