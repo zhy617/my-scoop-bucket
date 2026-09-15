@@ -1,0 +1,27 @@
+{
+    "version": "3.46.1.409",
+    "description": "Tencent Meeting (64-bit)",
+    "homepage": "https://meeting.tencent.com/",
+    "license": {
+        "identifier": "Freeware"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://updatecdn.meeting.qq.com/cos/e527f093f3f0e3de00701e82655de183/TencentMeeting_0300000000_3.46.1.409_x86_64.publish.exe#/dl.7z",
+            "hash": "sha256:3ccb6c2970b3c19fdca21977862f4e10d9954060b5966ae36d96d645df4696cb"
+        }
+    },
+    "installer": {
+        "script": [
+            "Get-Item \"$dir\\`$_*_\" | Rename-Item -NewName \"$version\"",
+            "Move-Item \"$dir\\wemeetapp_new.exe\" \"$dir\\WeMeet.exe\"",
+            "Remove-Item -Recurse -Path \"$dir\\`$WINDIR\",\"$dir\\`$PLUGINSDIR\",\"$dir\\`$TEMP\",\"$dir\\wemeetapp.exe\""
+        ]
+    },
+    "shortcuts": [
+        [
+            "WeMeet.exe",
+            "腾讯会议 64 位"
+        ]
+    ]
+}
