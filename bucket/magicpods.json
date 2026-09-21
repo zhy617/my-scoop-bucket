@@ -1,10 +1,10 @@
 {
-    "version": "2.0.98.0",
+    "version": "2.0.99.0",
     "description": "Check AirPods battery on Windows with popup animation, noise control, hotkeys, and more.",
     "homepage": "https://magicpods.app/",
     "license": "Proprietary",
     "url": "https://magicpods.app/installer/MagicPods.appinstaller#/MagicPods.appinstaller",
-    "hash": "bdc91f9723ab2d885bac194104281569735e1b246c55ea8d9dec10a152e14cbb",
+    "hash": "70c3efe6dea330425bff2394ae40f3bf03e58b65edcf55ba4869e1fa9cd30f80",
     "installer": {
         "script": [
             "Add-AppxPackage -Path \"$dir\\MagicPods.appinstaller\" -AppInstallerFile",
