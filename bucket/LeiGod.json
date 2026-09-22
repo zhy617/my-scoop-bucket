@@ -24,7 +24,7 @@
     ],
     "pre_uninstall": [
         "foreach ($process in @('leigod', 'LeiGod')) { Get-Process -Name $process -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue }",
-        "foreach ($path in @(\"$env:APPDATA\\leigod\", \"$env:USERPROFILE\\.leigod\")) { if (Test-Path -LiteralPath $path) { $item = Get-Item -LiteralPath $path -Force; if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue } } }"
+        "foreach ($path in @(\"$env:APPDATA\\leigod\", \"$env:USERPROFILE\\.leigod\")) { if (Test-Path -LiteralPath $path) { $item = Get-Item -LiteralPath $path -Force; if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { [System.IO.Directory]::Delete($path) } } }"
     ],
     "checkver": {
         "url": "https://www.leigod.com/configs.json",
