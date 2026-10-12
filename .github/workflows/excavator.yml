@@ -4,12 +4,35 @@ on:
     # run every 4 hours
     - cron: '20 */4 * * *'
 name: Excavator
+permissions:
+  contents: write
 jobs:
   excavate:
     name: Excavate
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@main
+      - name: Test Tencent Meeting updater
+        shell: powershell
+        run: .\scripts\test-we-meet-updater.ps1
+      - name: Update Tencent Meeting manifest
+        shell: powershell
+        run: .\scripts\update-we-meet-x64.ps1
+      - name: Commit Tencent Meeting update
+        shell: powershell
+        run: |
+          git diff --quiet -- bucket/we-meet-x64.json
+          if ($LASTEXITCODE -eq 1) {
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- bucket/we-meet-x64.json
+            git commit -m "we-meet-x64: update official Windows x64 release"
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot commit manifest update.' }
+            git push
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot push manifest update.' }
+          } elseif ($LASTEXITCODE -ne 0) {
+            throw 'Cannot inspect manifest changes.'
+          }
       - name: Excavate
         uses: ScoopInstaller/GithubActions@main
         env:
