@@ -21,7 +21,7 @@ if (!$check.Changed -or $check.Version -ne $futureVersion -or (Get-FileHash -Lit
 $update = & $updaterPath -ManifestPath $fixturePath -CacheDirectory $testRoot
 $updatedManifest = Get-Content -LiteralPath $fixturePath -Raw -Encoding UTF8 | ConvertFrom-Json
 $expectedSha = (Get-FileHash -LiteralPath $fixturePackage -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($updatedManifest.version -ne $futureVersion -or $updatedManifest.architecture.'64bit'.url -ne $futureAlias -or $updatedManifest.architecture.'64bit'.hash -ne ('sha256:' + $expectedSha)) { throw 'Future version, URL or SHA256 did not update together.' }
+if ($updatedManifest.version -ne $futureVersion -or ($updatedManifest.architecture.'64bit'.pre_install[0] -split "'")[1] -ne $futureUrl -or ($updatedManifest.architecture.'64bit'.pre_install[1] -split "'")[1] -ne $expectedSha) { throw 'Future version, URL or SHA256 did not update together.' }
 $noChange = & $updaterPath -ManifestPath $fixturePath -CacheDirectory $testRoot
 if ($noChange.Changed) { throw 'Unchanged upstream should not rewrite the manifest.' }
 $beforeFailure = (Get-FileHash -LiteralPath $fixturePath).Hash

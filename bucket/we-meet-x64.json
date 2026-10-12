@@ -7,8 +7,31 @@
   },
   "architecture": {
     "64bit": {
-      "url": "https://updatecdn.meeting.qq.com/cos/ea5a12b3227f8be5c785cda6dbfb73f6/TencentMeeting_0300000000_3.46.11.413_x86_64.publish.officialwebsite.exe#/dl.7z",
-      "hash": "sha256:0e8211de5e72625f58cb3200e015e03f05d52e1fa069b2d67bba9a73491ec11b"
+      "url": "https://raw.githubusercontent.com/zhy617/my-scoop-bucket/master/LICENSE#/wemeet-bootstrap.txt",
+      "hash": "sha256:6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e",
+      "pre_install": [
+        "$packageUrl = 'https://updatecdn.meeting.qq.com/cos/ea5a12b3227f8be5c785cda6dbfb73f6/TencentMeeting_0300000000_3.46.11.413_x86_64.publish.officialwebsite.exe'",
+        "$packageSha256 = '0e8211de5e72625f58cb3200e015e03f05d52e1fa069b2d67bba9a73491ec11b'",
+        "$packageCache = cache_path 'we-meet-x64' $version ($packageUrl + '#/dl.7z')",
+        "$cacheValid = (Test-Path -LiteralPath $packageCache) -and ((Get-FileHash -LiteralPath $packageCache -Algorithm SHA256).Hash -eq $packageSha256)",
+        "if (!$cacheValid) {",
+        "    New-Item -ItemType Directory -Path (Split-Path $packageCache) -Force | Out-Null",
+        "    $partial = $packageCache + '.download-' + [guid]::NewGuid().ToString('N')",
+        "    $client = New-Object System.Net.WebClient",
+        "    try {",
+        "        $client.Headers['Referer'] = 'https://meeting.tencent.com/'",
+        "        $client.Headers['User-Agent'] = Get-UserAgent",
+        "        Write-Host \"Downloading Tencent Meeting $version with the official Referer...\"",
+        "        $client.DownloadFile($packageUrl, $partial)",
+        "        if ((Get-FileHash -LiteralPath $partial -Algorithm SHA256).Hash -ne $packageSha256) { throw 'Tencent Meeting package SHA256 mismatch.' }",
+        "        Move-Item -LiteralPath $partial -Destination $packageCache -Force",
+        "    } finally {",
+        "        $client.Dispose()",
+        "        if (Test-Path -LiteralPath $partial) { Remove-Item -LiteralPath $partial -Force }",
+        "    }",
+        "}",
+        "Expand-7zipArchive -Path $packageCache -DestinationPath $dir"
+      ]
     }
   },
   "installer": {
@@ -23,5 +46,6 @@
       "WeMeet.exe",
       "腾讯会议 64 位"
     ]
-  ]
+  ],
+  "depends": "7zip"
 }

@@ -26,7 +26,8 @@ if ($releaseUri.Scheme -ne 'https' -or $releaseUri.Host -ne 'updatecdn.meeting.q
 if ($release.md5 -notmatch '^[a-fA-F0-9]{32}$' -or [long]$release.size -le 0) { throw 'Official package integrity metadata is missing.' }
 if ([version]$release.version -lt [version]$manifest.version) { throw 'Refusing to downgrade the manifest.' }
 $newUrl = $release.url + '#/dl.7z'
-$changed = $manifest.version -ne $release.version -or $manifest.architecture.'64bit'.url -ne $newUrl
+$pinnedPackageUrl = ($manifest.architecture.'64bit'.pre_install[0] -split "'")[1]
+$changed = $manifest.version -ne $release.version -or $pinnedPackageUrl -ne $release.url
 if ($CheckOnly -or !$changed) {
     [pscustomobject]@{ Version=$release.version; Url=$newUrl; Changed=$changed; ManifestPath=$ManifestPath }
     return
@@ -59,8 +60,8 @@ if (!$cacheValid) {
 }
 $packageHash = (Get-FileHash -LiteralPath $cacheFile -Algorithm SHA256).Hash.ToLowerInvariant()
 $manifest.version = $release.version
-$manifest.architecture.'64bit'.url = $newUrl
-$manifest.architecture.'64bit'.hash = 'sha256:' + $packageHash
+$manifest.architecture.'64bit'.pre_install[0] = '$packageUrl = ' + [char]39 + $release.url + [char]39
+$manifest.architecture.'64bit'.pre_install[1] = '$packageSha256 = ' + [char]39 + $packageHash + [char]39
 $tempManifest = $ManifestPath + '.tmp-' + [guid]::NewGuid().ToString('N')
 try {
     [System.IO.File]::WriteAllText($tempManifest, ($manifest | ConvertTo-Json -Depth 20) + "`r`n", [System.Text.UTF8Encoding]::new($false))

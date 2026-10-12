@@ -41,37 +41,23 @@ Guide](https://github.com/ScoopInstaller/.github/blob/main/.github/CONTRIBUTING.
 and [App Manifests](https://github.com/ScoopInstaller/Scoop/wiki/App-Manifests)
 wiki page.
 
-## Tencent Meeting download workaround
+## Tencent Meeting
 
-The Tencent CDN can reject Scoop's automatically generated Referer with HTTP 403.
-For `we-meet-x64`, run this from the repository root instead of a direct install:
-
-```powershell
-.\scripts\install-we-meet-x64.ps1
-```
-
-The script reads the version, URL and SHA256 from `bucket/we-meet-x64.json`,
-downloads with the official homepage Referer, verifies the hash, and lets Scoop
-install the local manifest from its cache. It does not change Scoop configuration.
-To download and verify without installing, add `-DownloadOnly`.
-
-### Automatic Tencent Meeting updates
-
-The install script checks Tencent's official Windows x64 stable-release API before
-installing. It updates this repository's manifest only after checking the official
-package size and MD5, then computes a pinned SHA256. Running it again updates an
-existing installation originally installed from this repository manifest.
-Installations from another bucket are detected and are not silently switched.
-
-Use `-UsePinnedVersion` to explicitly keep the manifest version when the API is
-unavailable. To check upstream without downloading or editing the manifest:
+Use standard Scoop commands on any computer with this bucket:
 
 ```powershell
-.\scripts\update-we-meet-x64.ps1 -CheckOnly
+scoop install my-bucket/we-meet-x64
+scoop update we-meet-x64
 ```
 
-The existing Excavator workflow runs every four hours and now refreshes and commits
-this manifest before updating the other apps. This requires pushing these changes,
-enabling Actions, and allowing the workflow to write to the repository. It updates
-the bucket manifest, not the software installed on your PC. Local installation or
-updating still uses `scripts/install-we-meet-x64.ps1` so the correct Referer is used.
+The manifest uses a SHA256-pinned repository LICENSE as a small bootstrap file.
+Its standard `pre_install` hook downloads Tencent's official installer with the
+required homepage Referer, verifies the pinned installer SHA256, then extracts it.
+Both aria2 and Scoop's default downloader work. No extra user script or Scoop
+configuration change is required. 7-Zip is declared as a dependency.
+
+The existing Excavator workflow checks Tencent's official Windows x64 stable API
+every four hours. It checks the package size and official MD5, computes SHA256, and
+updates the version and the embedded download URL/hash together. This requires
+pushing the changes and enabling Actions with repository write permission.
+The updater script is for bucket maintenance/CI only; users run normal Scoop commands.
