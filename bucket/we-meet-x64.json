@@ -1,5 +1,5 @@
 {
-    "version":  "3.47.2.405",
+    "version":  "3.48.0.443",
     "description":  "Tencent Meeting (64-bit)",
     "homepage":  "https://meeting.tencent.com/",
     "license":  {
@@ -10,8 +10,8 @@
                                        "url":  "https://raw.githubusercontent.com/zhy617/my-scoop-bucket/master/LICENSE#/wemeet-bootstrap.txt",
                                        "hash":  "sha256:6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e",
                                        "pre_install":  [
-                                                           "$packageUrl = \u0027https://updatecdn.meeting.qq.com/cos/bb80d852af40cbffe3ed5e22f27d7a86/TencentMeeting_0300000000_3.47.2.405_x86_64.publish.officialwebsite.exe\u0027",
-                                                           "$packageSha256 = \u00271c7a862cfca4b3faeb1cf9c2244e97f09accf65c0256e690d7c3f7f2f99c71f7\u0027",
+                                                           "$packageUrl = \u0027https://updatecdn.meeting.qq.com/cos/03001aa87c1fdfe02774f25175603db9/TencentMeeting_0300000000_3.48.0.443_x86_64.publish.officialwebsite.exe\u0027",
+                                                           "$packageSha256 = \u0027d365c3102dd4330e92cf8675f8694985d64d3b108b698b7efe92d18c128fbeb4\u0027",
                                                            "$packageCache = cache_path \u0027we-meet-x64\u0027 $version ($packageUrl + \u0027#/dl.7z\u0027)",
                                                            "$cacheValid = (Test-Path -LiteralPath $packageCache) -and ((Get-FileHash -LiteralPath $packageCache -Algorithm SHA256).Hash -eq $packageSha256)",
                                                            "if (!$cacheValid) {",
