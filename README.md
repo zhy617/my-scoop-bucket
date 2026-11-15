@@ -53,8 +53,18 @@ scoop update we-meet-x64
 The manifest uses a SHA256-pinned repository LICENSE as a small bootstrap file.
 Its standard `pre_install` hook downloads Tencent's official installer with the
 required homepage Referer, verifies the pinned installer SHA256, then extracts it.
-Both aria2 and Scoop's default downloader work. No extra user script or Scoop
-configuration change is required. 7-Zip is declared as a dependency.
+The package downloader uses curl with connection and stalled-transfer timeouts.
+It tries the normal network route, direct access, then a fresh CDN address from
+Tencent's DNS-over-HTTPS service (`doh.pub`). The fallback applies only to this
+request, preserves the original HTTPS hostname and certificate verification, and
+does not change system DNS, proxy settings, or Scoop configuration. Each package
+must pass its pinned SHA256 before extraction; incomplete downloads are removed.
+Both aria2 and Scoop's default bootstrap downloader work. No extra user script is
+required. 7-Zip and curl are declared as dependencies.
+
+All installation and download logic lives in `bucket/we-meet-x64.json`; no extra
+PowerShell script is required. The existing maintenance updater only changes the
+pinned version, package URL and SHA256, preserving the embedded download logic.
 
 The existing Excavator workflow checks Tencent's official Windows x64 stable API
 every four hours. It checks the package size and official MD5, computes SHA256, and
