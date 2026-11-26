@@ -1,0 +1,41 @@
+{
+    "version": "0.3.4",
+    "description": "A third-party launcher for Arknights and Arknights: Endfield.",
+    "homepage": "https://github.com/lTinchl/Xel-Launcher",
+    "license": "Apache-2.0",
+    "notes": [
+        "Choose the persistent games directory shown below when installing new games, and select the folder containing Arknights.exe or Endfield.exe to import an existing installation.",
+        "Game library: $persist_dir\\games",
+        "Xel Launcher stores settings, game paths, and account backups in %LOCALAPPDATA%\\XelLauncher by default.",
+        "Use 'scoop update xel-launcher' to update the launcher."
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/lTinchl/Xel-Launcher/releases/download/v0.3.4/XelLauncher.v0.3.4-Portable.zip",
+            "hash": "cffd6dbdf6467dc3e2e537e2c99788561b43f90bdeeb2245908e486c1829cb22"
+        }
+    },
+    "bin": "XelLauncher.exe",
+    "shortcuts": [
+        [
+            "XelLauncher.exe",
+            "Xel Launcher"
+        ]
+    ],
+    "persist": [
+        "games",
+        "img",
+        "logs"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/lTinchl/Xel-Launcher/releases/download/v$version/XelLauncher.v$version-Portable.zip"
+            }
+        },
+        "hash": {
+            "mode": "github"
+        }
+    }
+}
